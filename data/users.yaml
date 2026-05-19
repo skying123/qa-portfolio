@@ -1,0 +1,7 @@
+valid_user:
+  email: eve.holt@reqres.in
+  password: cityslicka
+
+invalid_user:
+  email: abc@def.com
+  password: wrong
