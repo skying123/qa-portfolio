@@ -2,10 +2,10 @@ name: QA Portfolio CI
 
 on:
   push:
-    branches: [main,master]
+    branches: [main, master]
   pull_request:
-    branches: [main,master]
-  workflow_dispatch: # 允许手动触发
+    branches: [main, master]
+  workflow_dispatch:  # 允许手动触发
 
 permissions:
   contents: read
@@ -25,6 +25,8 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -34,7 +36,7 @@ jobs:
       - name: Run API tests with Allure results
         run: |
           pytest api_tests/ -v --env=prod --alluredir=./allure-results
-        continue-on-error: true # 即使有失败用例也继续生成报告
+        continue-on-error: true
 
       - name: Load test report history
         uses: actions/checkout@v4
@@ -50,7 +52,7 @@ jobs:
         with:
           allure_results: ./allure-results
           allure_history: gh-pages/allure-history
-          keep_reports: 20 # 保留最近20次构建历史
+          keep_reports: 20
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -60,16 +62,16 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         if: always()
         with:
-          path: gh-pages/allure-history  # 注意路径
+          path: gh-pages/allure-history
 
-    deploy:
-      needs: test
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-      runs-on: ubuntu-latest
-      environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-      steps:
-        - name: Deploy to GitHub Pages
-          id: deployment
-          uses: actions/deploy-pages@v4
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
