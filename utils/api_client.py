@@ -70,7 +70,7 @@ class APIClient:
                 name = '请求参数(Request)',
                 attachment_type = allure.attachment_type.JSON
             )
-            logger.info(f'请求：{method.upper()}{url} | payload={request_body}')
+            logger.info(f'请求：{method.upper()} {url} | payload={request_body}')
 
             # 2. 发起请求
             response = self.session.request(method,url,**kwargs)
@@ -87,7 +87,7 @@ class APIClient:
             allure.attach(
                 resp_text,
                 name = f'响应数据（Status：{response.status_code})',
-                attach_type = attach_type
+                attachment_type = attach_type
             )
 
             logger.info(f'响应：{response.status_code} | body={resp_text[:500]}')
