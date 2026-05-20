@@ -38,13 +38,25 @@ jobs:
           pytest api_tests/ -v --env=prod --alluredir=./allure-results
         continue-on-error: true
 
-      # 关键修改：用 Cache 替代 git checkout 获取历史数据
+      # 用 cache 跨构建保留历史数据
       - name: Restore Allure History
         uses: actions/cache@v4
         with:
           path: allure-history
           key: allure-history
           restore-keys: allure-history
+
+      # 关键修复：simple-elf action 硬编码读取 ./gh-pages/last-history
+      # 我们把 cache 里的历史数据复制到这个硬编码路径
+      - name: Prepare history path for Allure action
+        run: |
+          mkdir -p gh-pages
+          if [ -d "allure-history/last-history" ]; then
+            cp -r allure-history/last-history gh-pages/last-history
+            echo "History restored from cache to gh-pages/last-history"
+          else
+            echo "No previous history found (first run or cache miss)"
+          fi
 
       - name: Build Allure report
         uses: simple-elf/allure-report-action@master
