@@ -1,5 +1,7 @@
 import pytest
 import allure
+import os
+import platform
 from utils.api_client import APIClient
 from utils.config_reader import get_api_config
 
@@ -61,3 +63,17 @@ def api_client(api_config):
 
     # yield之后，关闭连接
     client.close()
+
+def pytest_configure(config):
+    allure_dir = config.getoption("--alluredir") or "./allure-results"
+    os.makedirs(allure_dir, exist_ok=True)
+
+    env = config.getoption("--env") or "dev"
+    base_url = "https://dummyjson.com" if env == "prod" else "https://dummyjson.com"  # 或从ini读取
+
+    with open(os.path.join(allure_dir, "environment.properties"), "w", encoding="utf-8") as f:
+        f.write(f"Python={platform.python_version()}\n")
+        f.write(f"Platform={platform.system()}\n")
+        f.write(f"Environment={env}\n")
+        f.write(f"BaseURL={base_url}\n")
+        f.write(f"Project=qa-portfolio\n")
