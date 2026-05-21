@@ -5,15 +5,6 @@ import platform
 from utils.api_client import APIClient
 from utils.config_reader import get_api_config
 
-# 注册自定义命令行参数
-def pytest_addoption(parser):
-    parser.addoption(
-        "--env",
-        action = "store",
-        default = "dev",
-        help = "指定测试环境dev | prod"
-    )
-
 # 读取当前环境标识
 @pytest.fixture(scope='session')
 def env(request):
