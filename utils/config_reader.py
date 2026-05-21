@@ -40,5 +40,6 @@ def get_ui_config(env:str='dev') -> Dict[str,Any]:
     return{
         'base_url':config.get('ui','base_url'),
         'browser':config.get('ui','browser'),
-        'headless':config.getboolean('ui','headless',fallback=True)
+        'headless':config.getboolean('ui','headless',fallback=True),
+        'driver_path':config.get('ui','driver_path',fallback="").strip()
     }

@@ -6,3 +6,8 @@ allure-results/
 allure-report/
 *.log
 .DS_Store
+# 驱动二进制（核心：禁止提交）
+drivers/
+*.exe
+chromedriver
+chromedriver-*
