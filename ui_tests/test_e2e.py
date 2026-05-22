@@ -96,4 +96,4 @@ class TestSauceDemo:
         inventory.take_screenshot('购物车加购成功截图')
 
         # 故意失败，触发截图
-        assert login.is_displayed((By.ID,'not-exist-element')),'故意触发失败截图'
+        assert inventory.is_displayed((By.ID,'not-exist-element')),'故意触发失败截图'
