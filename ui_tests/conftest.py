@@ -62,8 +62,20 @@ def driver(ui_config):
         service = ChromeService(executable_path=driver_path)
         allure.attach(f'使用本地的Chromedriver：{driver_path}',name='Driver来源')
     else:
-        service = ChromeService(ChromeDriverManager().install())
-        allure.attach('使用自动下载的Chromedriver',name='Driver来源')
+        # CI 环境优先使用系统预装的 chromedriver
+        system_paths = ["/usr/bin/chromedriver", "/usr/local/bin/chromedriver"]
+        chromedriverpath = None
+        for p in system_paths:
+            if os.path.exists(p):
+                chromedriverpath = p
+                break
+        
+        if chromedriverpath:
+            service = ChromeService(executable_path=chromedriverpath)
+            allure.attach(f'使用系统预装的Chromedriver：{chromedriverpath}',name='Driver来源')
+        else:
+            service = ChromeService(ChromeDriverManager().install())
+            allure.attach('使用自动下载的Chromedriver',name='Driver来源')
 
     driver = webdriver.Chrome(service=service,options=options)
     driver.implicitly_wait(0) # 禁用隐式等待，全部使用显示等待
