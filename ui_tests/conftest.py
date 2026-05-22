@@ -88,7 +88,11 @@ def driver(ui_config):
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item,call):
-    """测试失败自动截图并附加到allure"""
+    """
+    测试失败自动截图并附加到allure
+    item: 当前执行的测试用例对象（包含用例名称、所属类、fixture等信息）
+    call: 当前执行阶段对象（包含 when/setup/call/teardown 和结果状态）
+    """
     outcome = yield
     report = outcome.get_result()
 

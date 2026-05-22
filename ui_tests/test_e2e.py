@@ -4,6 +4,7 @@ from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPAGE
 from pages.checkout_page import CheckoutPage
+from selenium.webdriver.common.by import By
 
 
 @allure.feature('UI自动化')
@@ -74,3 +75,25 @@ class TestSauceDemo:
             checkout.finish()
             complete_header = checkout.get_complete_header()
             assert 'Thank you' in complete_header,f'完成页标题不符合预期：{complete_header}'
+
+    @allure.title('演示-失败自动截图')
+    @allure.severity(allure.severity_level.MINOR)
+    @pytest.mark.xfail(reason='故意失败，用于演示allure自动截图能力',strict=False)
+    @pytest.mark.ui
+    def test_demo_failure_screenshot(self,driver,ui_config):
+        """此用例故意断言不存在的元素，触发失败截图，用于演示"""
+        login = LoginPage(driver,ui_config['base_url'])
+        login.open()
+        login.login('standard_user','secret_sauce')
+
+        # 留下成功登录截图
+        login.take_screenshot('登录成功截图')
+
+        inventory = InventoryPage(driver, ui_config["base_url"])
+        inventory.add_first_product_to_cart()
+
+        # 再截图一次，留下购物车加购成功截图
+        inventory.take_screenshot('购物车加购成功截图')
+
+        # 故意失败，触发截图
+        assert login.is_displayed((By.ID,'not-exist-element')),'故意触发失败截图'
