@@ -96,7 +96,8 @@ def pytest_runtest_makereport(item,call):
     outcome = yield
     report = outcome.get_result()
 
-    if report.when == 'call' and report.failed:
+    # 修复：普通失败(report.failed) 或 xfail失败(wasxfail属性存在) 都截图
+    if report.when == "call" and (report.failed or getattr(report, "wasxfail", False)):
         driver = item.funcargs['driver']
         if driver:
             allure.attach(
