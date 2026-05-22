@@ -62,7 +62,7 @@ def driver(ui_config):
         service = ChromeService(executable_path=driver_path)
         allure.attach(f'使用本地的Chromedriver：{driver_path}',name='Driver来源')
     else:
-        service = ChromeService(ChromeDriverManager.install())
+        service = ChromeService(ChromeDriverManager().install())
         allure.attach('使用自动下载的Chromedriver',name='Driver来源')
 
     driver = webdriver.Chrome(service=service,options=options)
