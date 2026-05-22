@@ -35,7 +35,7 @@ jobs:
 
       - name: Run API tests with Allure results
         run: |
-          pytest api_tests/ -v --env=prod --alluredir=./allure-results
+          pytest api_tests/ ui_tests/ -v --env=prod --alluredir=./allure-results
         continue-on-error: true
 
       # 用 cache 跨构建保留历史数据

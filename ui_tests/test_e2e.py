@@ -58,7 +58,8 @@ class TestSauceDemo:
         with allure.step('步骤3：进入购物车'):
             inventory.go_to_cart()
             cart = CartPAGE(driver,base_url)
-            assert cart.get_items_count() == 1,'购物车商品数量不为1'
+            cart_count = cart.get_items_count()
+            assert cart_count == 1,f'购物车商品数量不为1，实际为：{cart_count}'
 
         with allure.step('步骤4：点击结账'):
             cart.click_checkout()

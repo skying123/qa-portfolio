@@ -5,7 +5,7 @@ from pages.base_page import BasePage
 class CartPAGE(BasePage):
     """SauceDemo 购物车页面"""
 
-    CART_ITEMS = (By.CLASS_NAME,'cart-item')
+    CART_ITEMS = (By.CLASS_NAME,'cart_item')
     CHECKOUT_BUTTON = (By.ID,'checkout')
     CONTINUE_SHOPPING = (By.ID,'continue-shopping')
 
