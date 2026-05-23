@@ -32,3 +32,17 @@ users:
     firstName: morpheus
     lastName: zion
     age: 35
+
+# ui测试数据
+ui:
+  saucedemo:
+    valid:
+      username: standard_user
+      password: secret_sauce
+    locked:
+      username: locked_out_user
+      password: secret_sauce
+    chechout_info:
+      first_name: Test
+      last_name: User
+      zip_code: "12345"

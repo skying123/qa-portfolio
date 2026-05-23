@@ -5,7 +5,9 @@ from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPAGE
 from pages.checkout_page import CheckoutPage
 from selenium.webdriver.common.by import By
+from utils.data_loader import load_test_data
 
+TEST_DATA = load_test_data()
 
 @allure.feature('UI自动化')
 @allure.story('SauceDemo电商流程')
@@ -18,7 +20,7 @@ class TestSauceDemo:
     def test_login_success(self,driver,ui_config):
         login_page = LoginPage(driver,ui_config['base_url'])
         login_page.open()
-        login_page.login('standard_user','secret_sauce')
+        login_page.login(TEST_DATA['ui']['saucedemo']['valid']['username'],TEST_DATA['ui']['saucedemo']['valid']['password'])
 
         inventory = InventoryPage(driver,ui_config['base_url'])
         assert inventory.is_displayed(inventory.PRODUCT_ITEMS),'商品列表未显示'
@@ -30,7 +32,7 @@ class TestSauceDemo:
     def test_login_locked_user(self,driver,ui_config):
         login_page = LoginPage(driver,ui_config['base_url'])
         login_page.open()
-        login_page.login('locked_out_user','secret_sauce')
+        login_page.login(TEST_DATA['ui']['saucedemo']['locked']['username'],TEST_DATA['ui']['saucedemo']['locked']['password'])
 
         error_message = login_page.get_error_message()
         assert 'locked out' in error_message.lower(),f'错误提示不符合预期：{error_message}'
@@ -46,7 +48,7 @@ class TestSauceDemo:
         with allure.step('步骤1：登录'):
             login = LoginPage(driver,base_url)
             login.open()
-            login.login('standard_user','secret_sauce')
+            login.login(TEST_DATA['ui']['saucedemo']['valid']['username'],TEST_DATA['ui']['saucedemo']['valid']['password'])
 
         # 2.加购
         with allure.step('步骤2：添加商品到购物车'):
@@ -68,7 +70,7 @@ class TestSauceDemo:
         # 4.填写信息
         with allure.step('步骤5：填写收货信息'):
             checkout = CheckoutPage(driver,base_url)
-            checkout.fill_info('test','user','12345')
+            checkout.fill_info(TEST_DATA['ui']['saucedemo']['chechout_info']['first_name'],TEST_DATA['ui']['saucedemo']['chechout_info']['last_name'],TEST_DATA['ui']['saucedemo']['chechout_info']['zip_code'])
 
         # 5.完成订单
         with allure.step('步骤6：完成订单'):
