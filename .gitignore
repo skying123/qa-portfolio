@@ -11,3 +11,5 @@ drivers/
 *.exe
 chromedriver
 chromedriver-*
+# JMeter
+*.jtl
