@@ -2,7 +2,7 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# 系统依赖
+# 安装系统级依赖（Allure、Java、Chrome、Python）
 RUN apt-get update && apt-get install -y \
     openjdk-21-jre \
     python3 \
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     && npm cache clean --force \
     && rm -rf /var/lib/apt/lists/*
 
-# 验证
+# 验证关键工具
 RUN allure --version && python3 --version && chromium --version
 
 USER jenkins

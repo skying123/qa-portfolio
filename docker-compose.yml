@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   jenkins:
-    image: .
+    build: .
+    image: my-jenkins:latest
     container_name: jenkins
     user: root
     restart: unless-stopped
