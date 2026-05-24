@@ -15,7 +15,7 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                sh '${PIP} install -r requirements.txt'
+                sh '${PIP} install -r requirements.txt --break-system-packages'
             }
         }
         
