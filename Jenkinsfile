@@ -34,17 +34,17 @@ pipeline {
     
     post {
         always {
-        sh '''
-            if command -v allure >/dev/null 2>&1; then
+            sh '''
                 allure generate ./allure-results -o ./allure-report --clean
-            else
-                echo "Allure CLI not found, skipping report generation"
-            fi
-        '''
-    }
-    
-    success {
-        archiveArtifacts artifacts: 'allure-report/**/*', allowEmptyArchive: true
-    }
+            '''
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'allure-report',
+                reportFiles: 'index.html',
+                reportName: 'Allure Report'
+            ])
+        }
     }
 }
